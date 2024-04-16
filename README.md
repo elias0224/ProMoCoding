@@ -1,2 +1,3 @@
 # ProMoCoding
-University Programming Exercise in Haskell
+University Programming 
+Exercise in Haskell
