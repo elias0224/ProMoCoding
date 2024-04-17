@@ -1,14 +1,14 @@
 
-kopf :: [a] -> a
+kopf :: String -> Char
 kopf s = s!!0
 
-ende :: [a] -> a
+ende :: String -> Char
 ende c = last c
 
 
-rest :: [a] -> [a]
-rest xs = drop 0 xs
+rest :: String -> String
+rest xs = drop 1 xs
 
-start :: [a] -> [a]
-start xs = init xs
+start :: String -> String
+start xs = reverse(drop 1 (reverse xs))
 
