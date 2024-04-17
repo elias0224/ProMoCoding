@@ -7,7 +7,7 @@ ende c = last c
 
 
 rest :: String -> String
-rest xs = reverse(drop 1 (reverse xs))
+rest xs = reverse(init (reverse xs))
 
 start :: String -> String
 start xs = drop 1 xs
