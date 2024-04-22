@@ -2,6 +2,7 @@
 --let lawful_to_chaotic = ["Lawful", "Neutral", "Chaotic"] 
 --let good_to_evil = ["Good", "Neutral", "Evil"]
 --[lc++" "++ge | lc <- lawful_to_chaotic, ge <- good_to_evil, lc /= gc]
+--seems to only works in the terminal and waiting for solutions from university
 
 --second task
 alleGleich :: Integer -> Integer -> Integer -> Bool
