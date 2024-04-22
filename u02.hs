@@ -32,7 +32,7 @@ leng c = sum[1 | _ <- c]
 
 --e)
 vokale :: [Char] -> [Char]
-vokale k = [p | p <- k, p == 'a', p == 'e', p== 'i', p== 'o', p== 'u']
+vokale k = [p | p <- k,p `elem` "aeiouAEIOU" ]
 
 --f)
 faktoren :: Integer -> [Integer]
