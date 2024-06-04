@@ -42,8 +42,9 @@ op x xs | x /= 0 && x /= 1 && xs /= 0 && xs /= 1 = error ""
         | x == xs                                = 1
 
 --b)
-
-
+--neutrales Element = 1 rechts- und linksneutral siehe Blatt
+--assoziativ = (0 <> 1) <> 1  = 0
+--              0 <> (1 <> 1) = 0
 --c)
 
 instance Semigroup Int where
@@ -104,7 +105,7 @@ triplefromList :: [a] -> Triple a
 triplefromList []         = error "kein Punkt"
 triplefromList [_]        = error "kein Punkt"
 triplefromList [_,_]      = error "kein Punkt"
-triplefromList (x:y:z:xs) = Triple x y z
+triplefromList (x:y:z:_) = Triple x y z
 
 -- triplefromList' :: [a] -> [Triple a]
 -- triplefromList' []                              = []
