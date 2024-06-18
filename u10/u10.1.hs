@@ -9,7 +9,7 @@ main = do
     stil <- getLine
     putStrLn "Wie ist ihr Name?"
     name <- getLine
-    content <- readfile "one-hit-wonder.txt" 
+    content <- readFile "one-hit-wonder.txt"
     let changedName = changeName name content
     putStr "Hier ist ihr Lied:"
     if(stil == "laut")

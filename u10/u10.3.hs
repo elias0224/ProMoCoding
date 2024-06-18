@@ -22,7 +22,7 @@ main = do
 --     contentsWB <- readFile "u10.woerterbuch.txt"
 --     let dict = map read (lines contentsWB)
 
---     original <- readFile "orgiinal.txt"
+--     original <- readFile "original.txt"
 --     putStrln $ unword $ map (look dict) (words original)
 
 -- let translation = dictLookup dict word
