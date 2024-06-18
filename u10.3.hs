@@ -1,5 +1,5 @@
 import System.IO
-import Distribution.Simple.Utils (xargs)
+
 
 main :: IO()
 main = do
