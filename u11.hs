@@ -1,4 +1,5 @@
 
+
 --A11-1
 
 
@@ -16,14 +17,14 @@ negateFunctor = fmap negate
 
 --c)
 instance Applicative List where
-    pure x = Cons x Nil
+    pure x = Cons x (pure x)
     Nil <*> _ = Nil
     _ <*> Nil = Nil
     Cons x xs <*> Cons y ys = Cons (x y) (xs <*> ys)
 
 zipwith' :: (a -> b -> c) -> List a -> List b -> List c
+--zipwith' :: Applicative f => (a -> a -> b) -> f a -> f a -> f b
 zipwith' f xs ys = f <$> xs <*> ys
-
 
 --A11-2
 
@@ -36,56 +37,61 @@ type Account = (Money, Money)
 
 withdraw :: Money -> Account -> Maybe Account
 withdraw x (credit, debit) | debit < credit = Nothing
-                           | otherwise = Just (credit, debit)
-                           where 
-                            credit = credit + x
+                           | otherwise = Just (credit + x, debit)
+                           
 
 deposit :: Money -> Account -> Maybe Account
-deposit x (credit, debit) = Just (credit, debit + x)
+deposit x (credit, debit)| x < 0     = Nothing
+                         | otherwise = Just (credit, debit + x)
 
 --c) 
+acc2 :: Account
+acc2 = (0,0)
 
 
-
+ex1a :: Maybe Balance
 ex1a = do 
-    account <- deposit 90000000 (0,0)
-    account <- withdraw 40000000 account
-    account <- withdraw 10000000 account
-    account <- withdraw 45000000 account
-    account <- deposit 6000000 account
-    accountState account
+    let acc2 = (0,0)
+    acc2 <- deposit 90000000 acc2
+    acc2 <- withdraw 40000000 acc2
+    acc2 <- withdraw 10000000 acc2
+    acc2 <- withdraw 45000000 acc2
+    acc2 <- deposit 6000000 acc2
+    acc2 <- accountState acc2
+    return acc2
+    
 
-
-ex2a =do
-    account <- deposit 20000000 (0,0)
+ex2a :: Maybe Balance
+ex2a = do
+    account <- deposit 20000000 (0,0) --or let account = (0,0)
     account <- deposit 40000000 account
     account <- withdraw 15000000 account
     account <- withdraw 25000000 account
     account <- deposit 10000000 account 
-    accountState account
+    account <- accountState account
+    return account
     
 
 --d)
 
 
+ex1b :: Maybe Balance
 ex1b = 
-     deposit 90000000 (0,0) >>= \account ->
-     withdraw 40000000 account >>= \account ->
-     withdraw 10000000 account >>= \account ->
-     withdraw 45000000 account >>= \account ->
-     deposit 6000000 account >>= \account ->
-     accountState account
+     deposit 90000000 (0,0) >>= withdraw 40000000 >>= withdraw 10000000 >>=
+     withdraw 45000000  >>= deposit 6000000 >>= accountState >>= \account ->
+     return account
 
 
+ex2b :: Maybe Balance
 ex2b = 
-    deposit 20000000 (0,0) >>= \account ->
-    deposit 40000000 account >>= \account ->
-    withdraw 15000000 account >>= \account ->
-    withdraw 25000000 account >>= \account ->
-    deposit 10000000 account  >>= \account ->
-    accountState account
+    deposit 20000000 (0,0) >>=  deposit 40000000 >>= withdraw 15000000  >>= 
+    withdraw 25000000  >>= deposit 10000000   >>=  accountState  >>= \account ->
+    return account
 
 --e)
+acc1 :: Account
+acc1 = (300,500)
+
 
 type Balance = Money 
 
@@ -120,7 +126,3 @@ instance Monad Box where
 
     (Full x)  >>= k         = k x
     (Empty x) >>= _         = Empty x
-
-
-
-
