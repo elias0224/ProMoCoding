@@ -107,6 +107,7 @@ moveKnight2 ((x,y):xs) | checkpos (x,y)   = filter checkpos [(x+c, y+z*((c `mod`
             checkpos (x,y) = x<9 && x>0 && y<9 && y>0
 
 in3Moves :: Knightpos -> [Knightpos]
+--in3Moves start = return start >>= moveknight >>= moveknight >>= moveknight
 in3Moves (x,y) = in3Moves' (in3Moves' (moveKnight (x,y)))
             where
                 in3Moves':: [Knightpos] -> [Knightpos]
