@@ -50,7 +50,7 @@ instance Applicative Logger where
 instance Monad Logger where
   return = pure
   (>>=) :: Logger a -> (a -> Logger b) -> Logger b
-  (>>=) (Logger x xs) f = f x
+  (>>=) (Logger x xs) f = let Logger y ys = f x in Logger y (xs ++ ys)
 
 --b)
 
