@@ -45,7 +45,7 @@ instance Applicative Logger where
   pure :: a -> Logger a
   pure a = Logger a []
   (<*>) :: Logger (a -> b) -> Logger a -> Logger b
-  (<*>) (Logger x xs) (Logger y ys) = Logger (x y) (xs++ys) 
+  (<*>) (Logger x xs) (Logger y ys) = Logger (x y) (ys ++ xs) 
 
 instance Monad Logger where
   return = pure
