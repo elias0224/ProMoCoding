@@ -1,6 +1,7 @@
 --A12-1
 import Control.Monad
 import Data.Fixed (mod')
+import Text.Show.Functions
 
 tellOp :: (Show a, Show b) => (a -> b) -> a -> IO b
 tellOp f x = let fx = f x in do
@@ -35,21 +36,21 @@ instance (Show a) => Show (Logger a) where
              show (Logger v logs) = show v ++ "\n" ++ unlines (reverse logs)
 
 --a)
--- instance Functor Logger where
---     fmap :: (a -> b) -> Logger a -> Logger b
---     fmap f (Logger x xs) =  Logger (f x) ((show f ): xs)
+instance Functor Logger where
+    fmap :: (a -> b) -> Logger a -> Logger b
+--  fmap f (Logger x xs) =  Logger (f x) ((show f ): xs)
+    fmap f (Logger x xs) = Logger (f x) xs
 
+instance Applicative Logger where
+  pure :: a -> Logger a
+  pure a = Logger a []
+  (<*>) :: Logger (a -> b) -> Logger a -> Logger b
+  (<*>) (Logger x xs) (Logger y ys) = Logger (x y) (xs++ys) 
 
--- instance Applicative Logger where
---   pure :: a -> Logger a
---   pure a = Logger a []
---   (<*>) :: Logger (a -> b) -> Logger a -> Logger b
---   (<*>) (Logger x xs) (Logger y ys) = Logger (x y) (xs++ys) 
-
--- instance Monad Logger where
---   return = pure
---   (>>=) :: Logger a -> (a -> Logger b) -> Logger b
---   (>>=) (Logger x xs) f = f x
+instance Monad Logger where
+  return = pure
+  (>>=) :: Logger a -> (a -> Logger b) -> Logger b
+  (>>=) (Logger x xs) f = f x
 
 --b)
 
@@ -119,3 +120,87 @@ reachin3Moves x y = x `elem` in3Moves y
 inXMoves ::Int -> Knightpos -> [Knightpos]
 inXMoves x y |  x>=2    = moveKnight2 (inXMoves (x-1) y)
              |otherwise = moveKnight y
+
+
+reachInXMoves :: Int -> Knightpos -> Knightpos -> Bool
+reachInXMoves x y z = y `elem` (inXMoves x z)
+
+
+--A12-4
+
+-- a) 
+--    g(h 0)
+--    g(\x -> x*x*x)
+--    g(0*0*0)
+--    g(0)
+--    \x -> 0 0
+--    0
+
+-- b) 
+--    g(h 0) = \x -> 0 (h o)
+--    0
+
+-- c)
+--   h(h 1)
+--   (\x -> x*x*x) (h1)
+--   (h 1)           * (h 1)           * (h 1)
+--   (\x -> x*x*x) 1 * (\x -> x*x*x) 1 * (\x -> x*x*x) 1
+--   1*1*1           * 1*1*1           * 1*1*1
+--   1
+
+--A12-5
+
+--a)
+--   summe_quadrate (5-2) (quadrat (3-1)  )
+--   summe_quadrate 3     (quadrat (3-1)  )
+--   summe_quadrate 3     (quadrat (2)    )
+--   summe_quadrate 3     ((\x -> x*x) (2))
+--   summe_quadrate 3     (2*2            )
+--   summe_quadrate 3      4
+--   (\x y -> quadrat x + quadrat y) 3 4
+--   quadrat 3          + quadrat 4
+--   (\x -> x*x) 3      + quadrat 4
+--   3*3                + quadrat 4
+--   9                  + (\x -> x*x) 4
+--   9                  + 4*4
+--   9                  + 16
+--   25
+
+--b)
+--   summe_quadrate                      (5-2)                (quadrat (3-1))
+--   (\x y -> quadrat x + quadrat y)     (5-2)                (quadrat (3-1))
+--   (\x -> x*x) (5-2)                   + quadrat            (quadrat (3-1))
+--   (5-2)*(5-2)                         + quadrat            (quadrat (3-1))
+--   (5-2)*(3)                           + quadrat            (quadrat (3-1))
+--   (3)*(3)                             + quadrat            (quadrat (3-1))
+--   9                                   + (\x -> x*x)        (quadrat (3-1)
+--   9                                   + (quadrat (3-1)    *(quadrat (3-1)
+--   9                                   + (\x -> x*x) (3-1) *(quadrat (3-1)
+--   9                                   + (3-1)*(3-1)       *(quadrat (3-1)
+--   9                                   + (2)*(3-1)         *(quadrat (3-1)
+--   9                                   + 2*2               *(quadrat (3-1)
+--   9                                   + 4                 *(quadrat (3-1)
+--   9                                   + 4                 *(\x -> x*x) (3-1)
+--   9                                   + 4                 *(3-1)*(3-1)
+--   9                                   + 4                 *(2)*(3-1)
+--   9                                   + 4                 *(2)*(2)
+--   9                                   + 4                 * 4
+--   9                                   + 16
+--   25
+
+--c)
+--   summe_quadrate                      (5-2)                 (quadrat (3-1))
+--   (\x y -> quadrat x + quadrat y)     (5-2)                 (quadrat (3-1))
+--   quadrat (5-2)                       + quadrat             (quadrat (3-1))
+--   (\x -> x*x) (5-2)                   + quadrat             (quadrat (3-1))
+--   (5-2)*(5-2)                         + quadrat             (quadrat (3-1))
+--   (3)*(3)                             + quadrat             (quadrat (3-1))
+--   9                                   + quadrat             (quadrat (3-1))
+--   9                                   + (\x -> x*x)         (quadrat (3-1))
+--   9                                   + (quadrat (3-1))   * (quadrat (3-1))
+--   9                                   + (\x -> x*x) (3-1) * (\x -> x*x) (3-1)
+--   9                                   + (3-1) * (3-1)     * (3-1) * (3-1)
+--   9                                   + 2     *  2        *  2    *  2
+--   9                                   + 4                 *  4
+--   9                                   + 16
+--   25
