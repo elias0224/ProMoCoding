@@ -1,6 +1,5 @@
 --A12-1
 import Control.Monad
-import Data.Fixed (mod')
 import Text.Show.Functions
 
 tellOp :: (Show a, Show b) => (a -> b) -> a -> IO b
