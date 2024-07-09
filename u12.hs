@@ -76,17 +76,17 @@ endMatch m = Logger m ["Ende"]
 
 -- Given name of player (p) and minute of game (t), add one goal to home team
 scoreHome :: String -> Int -> Match -> Logger Match
-scoreHome p t m = Logger (Match (homeTeam m) (awayTeam m) (homeScore m+1) (awayScore m)) ["Goal! von " ++ p ++ " zum Zeitpunkt " ++ show t]
+scoreHome p t m = Logger (Match (homeTeam m) (awayTeam m) (homeScore m+1) (awayScore m)) ["Goal! von " ++ p ++ " zum Zeitpunkt " ++ show t ++ " min"]
 
 
 -- Given name of player (p) and minute of game (t), add one goal to away team
 scoreAway :: String -> Int -> Match -> Logger Match
-scoreAway p t m = Logger (Match (homeTeam m) (awayTeam m) (homeScore m) (awayScore m+1)) ["Goal! von " ++ p ++ " zum Zeitpunkt " ++ show t]
+scoreAway p t m = Logger (Match (homeTeam m) (awayTeam m) (homeScore m) (awayScore m+1)) ["Goal! von " ++ p ++ " zum Zeitpunkt " ++ show t ++ "te min"]
 
 --c)
 
--- ex1 = 
---     startMatch "ARG" "FRA" >>= scoreHome "Messi" 23 >>= scoreHome "Di Maria" 36 >>= scoreAway "Mbappè" 80 >>= scoreAway "Mbappè" 81 >>= scoreHome "Messi" 108 >>= scoreAway "Mbappè" 118 >>= endMatch
+ex1 = 
+     startMatch "ARG" "FRA" >>= scoreHome "Messi" 23 >>= scoreHome "Di Maria" 36 >>= scoreAway "Mbappè" 80 >>= scoreAway "Mbappè" 81 >>= scoreHome "Messi" 108 >>= scoreAway "Mbappè" 118 >>= endMatch
 
 --A12-3
 
