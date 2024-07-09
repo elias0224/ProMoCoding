@@ -1,6 +1,7 @@
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 import Data.List
-import Data.List.NonEmpty (unfold)
+
+
 
 --A13-1)
 
@@ -30,17 +31,30 @@ opp' x = -x
 
  --a)
 plus' :: Integer -> Integer -> Integer
-plus' x 0 = 0
+plus' x 0 = x
 plus' x y | y > 0           = plus' (succ' x) (pred' y)
           |otherwise        = minus' x (opp' y)
 
 minus' :: Integer -> Integer -> Integer 
-minus' xs 0 = 0
+minus' xs 0 = xs
 minus' xs ys | ys > 0   = minus' (pred' xs) (pred' ys)
              |otherwise = plus' xs (opp' ys)
 
 mult' :: Integer -> Integer -> Integer
-mult' = undefined
+mult' _ 0 = 0
+mult' 0 _ = 0
+mult' x y | y > 0 && x > 0   = plus' x (mult' x (pred' y))
+          | y > 0 && x < 0   = opp'    (mult' (opp' x) y)
+          | y < 0 && x > 0   = opp'    (mult' x (opp' y))
+          |otherwise         = mult'   (opp' x) (opp' y)
+
+fact :: Integer -> Integer 
+fact 1              = 1
+fact x | x > 0      = mult' x (fact (pred' x))
+       |otherwise   = opp' (mult' x (fact (pred' x)))
+
+
+
 
 
 --A13-3)
