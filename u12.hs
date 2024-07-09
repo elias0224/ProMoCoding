@@ -1,6 +1,5 @@
 --A12-1
 import Control.Monad
-import Data.Fixed (mod')
 import Text.Show.Functions
 
 tellOp :: (Show a, Show b) => (a -> b) -> a -> IO b
@@ -85,7 +84,7 @@ scoreAway p t m = Logger (Match (homeTeam m) (awayTeam m) (homeScore m) (awaySco
 
 --c)
 
-ex1 = 
+ ex1 = 
      startMatch "ARG" "FRA" >>= scoreHome "Messi" 23 >>= scoreHome "Di Maria" 36 >>= scoreAway "Mbappè" 80 >>= scoreAway "Mbappè" 81 >>= scoreHome "Messi" 108 >>= scoreAway "Mbappè" 118 >>= endMatch
 
 --A12-3
@@ -108,6 +107,7 @@ moveKnight2 ((x,y):xs) | checkpos (x,y)   = filter checkpos [(x+c, y+z*((c `mod`
             checkpos (x,y) = x<9 && x>0 && y<9 && y>0
 
 in3Moves :: Knightpos -> [Knightpos]
+--in3Moves start = return start >>= moveknight >>= moveknight >>= moveknight
 in3Moves (x,y) = in3Moves' (in3Moves' (moveKnight (x,y)))
             where
                 in3Moves':: [Knightpos] -> [Knightpos]
