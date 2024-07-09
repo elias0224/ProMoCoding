@@ -84,7 +84,7 @@ scoreAway p t m = Logger (Match (homeTeam m) (awayTeam m) (homeScore m) (awaySco
 
 --c)
 
- ex1 = 
+ex1 =
      startMatch "ARG" "FRA" >>= scoreHome "Messi" 23 >>= scoreHome "Di Maria" 36 >>= scoreAway "Mbappè" 80 >>= scoreAway "Mbappè" 81 >>= scoreHome "Messi" 108 >>= scoreAway "Mbappè" 118 >>= endMatch
 
 --A12-3
