@@ -1,7 +1,8 @@
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 {-# LANGUAGE UndecidableInstances #-}
 import Data.List
-import Data.List.NonEmpty (unfold)
+
+
 
 --A13-1)
 
@@ -41,15 +42,7 @@ minus' xs ys | ys > 0   = minus' (pred' xs) (pred' ys)
              |otherwise = plus' xs (opp' ys)
 
 mult' :: Integer -> Integer -> Integer
-mult' x 0             = 0
-mult' x y | y > 0     = plus' x (mult' x (pred' y))
-          |otherwise  = mult' (opp' x) (opp' y)
-
-fact :: Integer -> Integer
-fact x  | x == 0   =  1
-        | x == -1  = -1
-        | x > 0    = mult' x (fact (pred' x))
-        |otherwise = mult' x (fact (succ' x))
+mult' = undefined
 
 
 --A13-3)
