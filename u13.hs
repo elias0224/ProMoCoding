@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
+{-# LANGUAGE UndecidableInstances #-}
 import Data.List
 import Data.List.NonEmpty (unfold)
 
@@ -30,17 +31,25 @@ opp' x = -x
 
  --a)
 plus' :: Integer -> Integer -> Integer
-plus' x 0 = 0
+plus' x 0 = x
 plus' x y | y > 0           = plus' (succ' x) (pred' y)
           |otherwise        = minus' x (opp' y)
 
 minus' :: Integer -> Integer -> Integer 
-minus' xs 0 = 0
+minus' xs 0 = xs
 minus' xs ys | ys > 0   = minus' (pred' xs) (pred' ys)
              |otherwise = plus' xs (opp' ys)
 
 mult' :: Integer -> Integer -> Integer
-mult' = undefined
+mult' x 0             = 0
+mult' x y | y > 0     = plus' x (mult' x (pred' y))
+          |otherwise  = mult' (opp' x) (opp' y)
+
+fact :: Integer -> Integer
+fact x  | x == 0   =  1
+        | x == -1  = -1
+        | x > 0    = mult' x (fact (pred' x))
+        |otherwise = mult' x (fact (succ' x))
 
 
 --A13-3)
@@ -72,7 +81,7 @@ instance Default (Maybe a) where
     def = Nothing
 
 -- instance (Num a) => Default a where
---     def = 0
+--       def = 0
 
 instance Default () where
     def :: ()
@@ -82,8 +91,8 @@ instance (Default a, Default b) => Default (a,b) where
     def :: (Default a, Default b) => (a, b)
     def = (def, def)
 
--- instance Monoid a => Default a where
---     def = mempty
+instance Monoid a => Default a where
+    def = mempty
 
 instance Default b => Default (a -> b) where
     def :: Default b => a -> b
