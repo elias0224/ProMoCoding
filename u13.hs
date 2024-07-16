@@ -44,6 +44,9 @@ minus' xs ys | ys > 0   = minus' (pred' xs) (pred' ys)
 mult' :: Integer -> Integer -> Integer
 mult' = undefined
 
+fact :: Integer -> Integer 
+fact = undefined
+
 
 --A13-3)
 --a) g(2) = 2 * g(0)        g(0) terminiert nicht
