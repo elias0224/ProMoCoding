@@ -1,3 +1,4 @@
+import Distribution.Simple.Command (OptDescr(BoolOpt))
 
 --Blatt1
 
@@ -64,3 +65,67 @@ pytri :: Integer -> [(Integer, Integer, Integer)]
 pytri x = [(a, b, c)| a <- [1..x],b <- [1..x],c <- [1..x], (a*a)==(b*b)+(c*c)]
 
 --Blatt3
+
+note :: Double -> (Integer, String)
+note x | x > 87.5 = (1, "sehr gut")
+       | x > 75 = (2, "gut")
+       | x > 62.5 = (3, "befriedigend")
+       | x > 50 = (4, "ausreichend")
+       |otherwise = (5, "nicht ausreichend")
+
+
+piApprox :: Int -> Double 
+piApprox x = sqrt(6*sum([  1 /(fromIntegral(y*y))| y <- [1 .. x]]))
+
+piApprox' :: Int -> Double
+piApprox' x = sqrt(6*(piApprox'' x 0))
+
+piApprox'' :: Int -> Int -> Double 
+piApprox'' x n | x > n     = (1 / fromIntegral(x*x) + piApprox'' (x-1) 0) 
+               |otherwise  = 0
+
+length' ::[a] -> Int
+length' []     = 0
+length' (x:xs) = 1 + length' xs
+
+length'' :: [a] -> Int
+length'' x = length''' x 0
+    where
+        length''' :: [a] -> Int -> Int
+        length''' [] acc = acc
+        length''' (x:xs) acc = length''' xs (acc + 1 )
+
+append' :: [a] -> [a] -> [a]
+append' _ [] = []
+append' [] _ = []
+append' (x:xs) (y:ys) = x:y: append' xs ys
+
+append'' :: [a] -> [a] -> [a]
+append'' x y = reverse (append''' x y [])
+    where 
+        append''' :: [a] -> [a] -> [a] -> [a] 
+        append''' _ [] acc = acc
+        append''' [] z acc = acc ++ z
+        append''' (x:xs) (y:ys) acc = append''' xs ys (x:acc)
+
+contains' :: Eq a => [a] -> a -> Bool
+contains' (x:xs) n | n == x = True
+                   |otherwise = False || contains' xs n
+
+contains'' :: Eq a => [a] -> a -> Bool
+contains'' x n = contains''' x n False
+    where
+        contains''' :: Eq a => [a] -> a -> Bool -> Bool 
+        contains''' (x:xs) n acc | x == n = False
+                                |otherwise = acc || contains''' xs n acc
+
+reverse' :: [a] -> [a]
+reverse' []     = []
+reverse' (x:xs) = reverse' xs ++[x]
+
+reverse'' :: [a] ->  [a]
+reverse'' x = reverseacc x []
+    where
+        reverseacc :: [a] -> [a] -> [a]
+        reverseacc [] acc = acc
+        reverseacc (x:xs) acc = reverseacc xs (x:acc)
