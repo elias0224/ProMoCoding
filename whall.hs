@@ -1,5 +1,16 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Eta reduce" #-}
+{-# HLINT ignore "Redundant bracket" #-}
+{-# HLINT ignore "Avoid lambda using `infix`" #-}
+{-# HLINT ignore "Evaluate" #-}
+{-# HLINT ignore "Redundant if" #-}
+{-# HLINT ignore "Use map" #-}
+{-# HLINT ignore "Avoid lambda" #-}
+{-# HLINT ignore "Use :" #-}
+{-# HLINT ignore "Use infix" #-}
+{-# HLINT ignore "Use foldr" #-}
+{-# HLINT ignore "Use head" #-}
+{-# HLINT ignore "Use even" #-}
 import Trace.Hpc.Mix (CondBox(QualBinBox), BoxLabel)
 import GHC.Exception (getCallStack)
 {-# HLINT ignore "Use odd" #-}
